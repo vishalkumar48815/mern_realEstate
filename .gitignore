@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/live_better/node_modules
+/live_better_backend/node_modules
 /.pnp
 .pnp.js
 
