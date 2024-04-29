@@ -3,6 +3,7 @@ import mongoose from 'mongoose' ;
 import dotenv from 'dotenv';
 import userRoute from './routes/user.route.js' ;
 import authRouter from './routes/auth.route.js' ;
+import errorHandlerMiddleware from './middlewares/error.js';
 
 dotenv.config();
 
@@ -25,3 +26,7 @@ app.listen(port, () => {
 
 app.use('/api/user', userRoute) ;
 app.use('/api/auth', authRouter) ;
+
+
+// middleware for errors 
+app.use(errorHandlerMiddleware)
