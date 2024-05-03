@@ -36,14 +36,4 @@ app.use('/api/auth', authRouter);
 
 
 // middleware for errors 
-app.use((err, req, res, next) => {
-    console.log("error: ", err)
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal Server Error';
-
-    return res.status(statusCode).error({
-        success: false,
-        statusCode,
-        message
-    })
-})
+app.use(errorHandlerMiddleware)

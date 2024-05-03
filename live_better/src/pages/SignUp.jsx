@@ -19,8 +19,8 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
       setLoading(true);
+
       let payload = {
         method: "POST",
         headers: {
@@ -28,6 +28,7 @@ export default function SignUp() {
         },
         body: JSON.stringify(formData)
       }
+      
       const res = await fetch('/api/auth/signup', payload)
       const data = await res.json();
 

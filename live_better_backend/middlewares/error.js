@@ -4,8 +4,8 @@ const errorHandlerMiddleware = () => {
         console.log("error: ", err)
         const statusCode = err.statusCode || 500;
         const message = err.message || 'Internal Server Error';
-
-        return res.status(statusCode).json({
+    
+        return res.status(statusCode).error({
             success: false,
             statusCode,
             message
