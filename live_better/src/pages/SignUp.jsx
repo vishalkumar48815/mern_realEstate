@@ -29,7 +29,7 @@ export default function SignUp() {
         body: JSON.stringify(formData)
       }
       
-      const res = await fetch('/api/auth/signup', payload)
+      const res = await fetch('http://localhost:5000/api/auth/signup', payload)
       const data = await res.json();
 
       if(data.success) {

@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import Input from "../components/Input";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { signInStart, signInSuccess, signInFailure } from "../redux/reducers/userSlice";
 
 export default function SignIn() {
     const [formData, setFormData] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('')
+    const { loading, error } = useSelector((state) =>  state.user );
+    // const [loading, setLoading] = useState(false);
+    // const [errorMessage, setErrorMessage] = useState('')
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // to handle the data of inputs on change  
     const handleInput = (e) => {
@@ -19,8 +23,9 @@ export default function SignIn() {
     // to submit the login form 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
+        
         try {
+            dispatch(signInStart());
             let payload = {
                 method: "POST",
                 headers: {
@@ -33,20 +38,17 @@ export default function SignIn() {
             console.log('data', data)
 
             if (!data.success) {
-                setLoading(false);
-                setErrorMessage(data.message);
+                dispatch(signInFailure(data));
                 return
             }
             if (data.success) {
-                setLoading(false);
-                setErrorMessage(null);
+                dispatch(signInSuccess(data));
                 navigate('/');
             }
         }
         catch (error) {
-            setLoading(false);
-            setErrorMessage(error.message);
-            console.log("error", error.message);
+            dispatch(signInFailure(error));
+            console.log("error", error.error);
         }
     }
 
@@ -65,7 +67,7 @@ export default function SignIn() {
 
             </form>
 
-            {errorMessage && <p className="text-red-500 mt-5">{errorMessage}</p>}
+            {error && <p className="text-red-500 mt-5">{error.error}</p>}
 
             <div className='flex gap-2 mt-5'>
                 <p>Don't have an account?</p>
