@@ -8,7 +8,7 @@ export const signUp = async (req, res, next) => {
     const hashedPassword = password && bcryptjs.hashSync(password, 10);
 
     const newUser = new User({ username, email, password: hashedPassword })
-    console.log("newUser: ", newUser)
+    // console.log("newUser: ", newUser)
     try {
         await newUser.save();
         res.status(201).json('User has been added successfully');
@@ -34,10 +34,40 @@ export const signIn = async (req, res, next) => {
             return res.status(401).json({ success: false, error: "Wrong credentials!" });
         }
         const jwtToken = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
-        const { password: pass, ...userInfo } = validUser;
-        res.cookie('accesstoken', jwtToken, { httpOnly: true }).status(200).json({...userInfo,  success:true})
+        const { password: pass, ...userInfo } = validUser._doc;
+        res.cookie('access_token', jwtToken, { httpOnly: true }).status(200).json({...userInfo,  success:true})
     }
     catch (err) {
         next(err);
     }
 }
+
+export const googleAuth = async (req, res, next) =>{
+     try{
+        let user = await User.findOne({email: req.body.email}).lean() ;
+
+        if(user){ 
+            let jwtToken = jwt.sign({id: user.id}, process.env.JWT_SECRET) ;
+            let { password: pass, ...userInfo } = user ;
+            res.cookie('access_token', jwtToken, {httpOnly: true})
+            .status(200)
+            .json({...userInfo, success: true}) ;
+        }
+        else{
+            let generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8) ;
+            let hashedPassword = generatedPassword && bcryptjs.hashSync(generatedPassword, 10) ;
+
+            const newUserByGoogleAuth = new User({email: req.body.email, username: req.body.name, profile_img: req.body.photoUrl, password: hashedPassword});
+            await newUserByGoogleAuth.save() ;
+            let jwtToken = jwt.sign({id: newUserByGoogleAuth.id}, process.env.JWT_SECRET) ;
+            const {password: pass, ...rest} = newUserByGoogleAuth._doc ;
+            res.cookie('access_token', jwtToken, {httpOnly: true}).status(200).json(rest);
+        }
+
+     }
+     catch (error){
+        next(error) ;
+     }
+}
+
+

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import { useState } from 'react';
+import { Google_Auth } from '../components/google_auth';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
@@ -14,7 +15,7 @@ export default function SignUp() {
       [e.target.id]: e.target.value
     })
   }
-  console.log("formData", formData)
+  // console.log("formData", formData)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,8 +61,8 @@ export default function SignUp() {
 
         <button disabled={loading} className='p-3 rounded-lg bg-slate-700 text-white hover:opacity-95 disabled:opacity-80 uppercase' type='submit'>{loading ? 'LOADING...' : 'Sign Up'}</button>
 
-        <button className='p-3 rounded-lg bg-red-700 text-white hover:opacity-95 disabled:opacity-80 uppercase'>Continue With Google</button>
 
+        <Google_Auth />
       </form>
       {error && <p className='text-red-500 mt-5'>{error}</p>}
 

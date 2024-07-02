@@ -3,6 +3,7 @@ import Input from "../components/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../redux/reducers/userSlice";
+import { Google_Auth } from "../components/google_auth";
 
 export default function SignIn() {
     const [formData, setFormData] = useState({});
@@ -52,7 +53,7 @@ export default function SignIn() {
         }
     }
 
-    console.log(formData)
+    // console.log(formData)
 
     // html code 
     return (
@@ -64,6 +65,8 @@ export default function SignIn() {
                 <Input type="password" placeholder="Your password" onchange={handleInput} id="password" />
 
                 <button disabled={loading} className="bg-slate-700 p-3 rounded-lg text-white hover:opacity-95 disabled:opacity-80 uppercase">{loading ? 'loading' : 'Sign in'}</button>
+
+                <Google_Auth />
 
             </form>
 
