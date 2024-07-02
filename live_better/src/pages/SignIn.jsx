@@ -36,7 +36,7 @@ export default function SignIn() {
             }
             const res = await fetch('http://localhost:5000/api/auth/signin', payload);
             const data = await res.json();
-            console.log('data', data)
+            // console.log('data', data)
 
             if (!data.success) {
                 dispatch(signInFailure(data));
