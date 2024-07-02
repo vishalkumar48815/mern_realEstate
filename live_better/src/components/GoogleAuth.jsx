@@ -5,7 +5,7 @@ import { signInSuccess } from '../redux/reducers/userSlice';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const Google_Auth = () => {
+export const GoogleAuth = () => {
     const [loading, SetLoading] = useState(false) ;
     let navigate = useNavigate() ;
     const dispatch = useDispatch() ;

@@ -3,7 +3,7 @@ import Input from "../components/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../redux/reducers/userSlice";
-import { Google_Auth } from "../components/google_auth";
+import { GoogleAuth } from "../components/GoogleAuth";
 
 export default function SignIn() {
     const [formData, setFormData] = useState({});
@@ -66,7 +66,7 @@ export default function SignIn() {
 
                 <button disabled={loading} className="bg-slate-700 p-3 rounded-lg text-white hover:opacity-95 disabled:opacity-80 uppercase">{loading ? 'loading' : 'Sign in'}</button>
 
-                <Google_Auth />
+                <GoogleAuth />
 
             </form>
 

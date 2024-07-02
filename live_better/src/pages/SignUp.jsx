@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import { useState } from 'react';
-import { Google_Auth } from '../components/google_auth';
+import { GoogleAuth } from '../components/GoogleAuth';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
@@ -62,7 +62,7 @@ export default function SignUp() {
         <button disabled={loading} className='p-3 rounded-lg bg-slate-700 text-white hover:opacity-95 disabled:opacity-80 uppercase' type='submit'>{loading ? 'LOADING...' : 'Sign Up'}</button>
 
 
-        <Google_Auth />
+        <GoogleAuth />
       </form>
       {error && <p className='text-red-500 mt-5'>{error}</p>}
 
