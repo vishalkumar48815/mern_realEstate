@@ -29,10 +29,12 @@ export default function SignIn() {
             dispatch(signInStart());
             let payload = {
                 method: "POST",
+                credentials: 'include',
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formData),
+                
             }
             const res = await fetch('http://localhost:5000/api/auth/signin', payload);
             const data = await res.json();
@@ -61,8 +63,8 @@ export default function SignIn() {
             <h1 className="text-center text-3xl my-5 font-semibold">Sign in</h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <Input type="email" placeholder="Your email" onchange={handleInput} id="email" />
-                <Input type="password" placeholder="Your password" onchange={handleInput} id="password" />
+                <Input type="email" placeholder="Your email" onChange={handleInput} id="email" />
+                <Input type="password" placeholder="Your password" onChange={handleInput} id="password" />
 
                 <button disabled={loading} className="bg-slate-700 p-3 rounded-lg text-white hover:opacity-95 disabled:opacity-80 uppercase">{loading ? 'loading' : 'Sign in'}</button>
 

@@ -24,16 +24,18 @@ export default function SignUp() {
 
       let payload = {
         method: "POST",
+        credentials: 'include',
         headers: {
           'content-type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        
       }
-      
+
       const res = await fetch('http://localhost:5000/api/auth/signup', payload)
       const data = await res.json();
 
-      if(data.success) {
+      if (data.success) {
         setLoading(false);
         setError(data.message);
         return
@@ -55,9 +57,9 @@ export default function SignUp() {
       <h1 className='text-center text-3xl font-semibold my-5 '>Sign up</h1>
 
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <Input type="text" placeholder="Username" id="username" onchange={handleChange} />
-        <Input type="email" placeholder="Email" id="email" onchange={handleChange} />
-        <Input type="password" placeholder="Password" id="password" onchange={handleChange} />
+        <Input type="text" placeholder="Username" id="username" onChange={handleChange} />
+        <Input type="email" placeholder="Email" id="email" onChange={handleChange} />
+        <Input type="password" placeholder="Password" id="password" onChange={handleChange} />
 
         <button disabled={loading} className='p-3 rounded-lg bg-slate-700 text-white hover:opacity-95 disabled:opacity-80 uppercase' type='submit'>{loading ? 'LOADING...' : 'Sign Up'}</button>
 

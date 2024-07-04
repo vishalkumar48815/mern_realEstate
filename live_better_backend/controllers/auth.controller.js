@@ -33,9 +33,9 @@ export const signIn = async (req, res, next) => {
         if (!validPassword) {
             return res.status(401).json({ success: false, error: "Wrong credentials!" });
         }
-        const jwtToken = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+        const jwtToken = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, {expiresIn: '1h'});
         const { password: pass, ...userInfo } = validUser._doc;
-        res.cookie('access_token', jwtToken, { httpOnly: true }).status(200).json({...userInfo,  success:true})
+        res.cookie('accessToken', jwtToken, { httpOnly: true }).status(200).json({...userInfo,  success:true})
     }
     catch (err) {
         next(err);
@@ -47,11 +47,13 @@ export const googleAuth = async (req, res, next) =>{
         let user = await User.findOne({email: req.body.email}).lean() ;
 
         if(user){ 
-            let jwtToken = jwt.sign({id: user.id}, process.env.JWT_SECRET) ;
+            let jwtToken = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'}) ;
             let { password: pass, ...userInfo } = user ;
-            res.cookie('access_token', jwtToken, {httpOnly: true})
+            res.cookie('accessToken', jwtToken, {httpOnly: true})
             .status(200)
             .json({...userInfo, success: true}) ;
+
+            
         }
         else{
             let generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8) ;
@@ -59,9 +61,11 @@ export const googleAuth = async (req, res, next) =>{
 
             const newUserByGoogleAuth = new User({email: req.body.email, username: req.body.name, profile_img: req.body.photoUrl, password: hashedPassword});
             await newUserByGoogleAuth.save() ;
-            let jwtToken = jwt.sign({id: newUserByGoogleAuth.id}, process.env.JWT_SECRET) ;
+
+            let jwtToken = jwt.sign({id: newUserByGoogleAuth._id}, process.env.JWT_SECRET, {expiresIn: '1h'}) ;
             const {password: pass, ...rest} = newUserByGoogleAuth._doc ;
-            res.cookie('access_token', jwtToken, {httpOnly: true}).status(200).json(rest);
+            
+            res.cookie('accessToken', jwtToken, {httpOnly: true}).status(200).json(rest);
         }
 
      }

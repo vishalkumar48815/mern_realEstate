@@ -18,6 +18,7 @@ export const GoogleAuth = () => {
             // console.log("result", result)
             const res = await fetch('http://localhost:5000/api/auth/googleAuth', {
                 method: "POST",
+                credentials: 'include',
                 headers: {
                     "content-type" : 'application/json'
                 },
@@ -26,6 +27,7 @@ export const GoogleAuth = () => {
             const data = await res.json();
             console.log("Data: ", data)
             dispatch(signInSuccess(data)) ;
+
             navigate('/')
 
         }
