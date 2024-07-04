@@ -3,7 +3,7 @@ import Input from '../components/Input'
 import { useDispatch, useSelector } from 'react-redux';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { app } from '../firebase';
-import { updatUserSuccess, updateUserFailure, updateUserStart } from '../redux/reducers/userSlice';
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signInFailure, signOutUser, signoutUserFailure, signoutUserStart, signoutUserSuccess, updatUserSuccess, updateUserFailure, updateUserStart } from '../redux/reducers/userSlice';
 
 export default function Profile() {
   const [loading, setLoading] = useState(false);
@@ -14,6 +14,7 @@ export default function Profile() {
   const imageUploadRef = useRef(null);
   const currentUser = useSelector(state => state.user.currentUser);
   let dispatch = useDispatch();
+  
 
   const [formInputs, setFormInputs] = useState({
     username: currentUser.username,
@@ -65,7 +66,7 @@ export default function Profile() {
     setFormData(updatedata)
     try {
       const res = await fetch(`http://localhost:5000/api/user/update/${userId}`, {
-        method: 'POST',
+        method: 'PUT',
         credentials: 'include',
         headers: {
           'content-type': 'application/json'
@@ -75,7 +76,7 @@ export default function Profile() {
       })
       // console.log('formData', updatedata)
       const data = await res.json()
-      // console.log("data", data)
+      console.log("data", data)
 
       if (!data.success) {
         dispatch(updateUserFailure(data));
@@ -89,6 +90,64 @@ export default function Profile() {
       console.log("Error while updating user: ", error)
     }
   }
+
+
+  // to delete user acount 
+   async function handleDeleteAccount() {
+    const userId = currentUser._id;
+    try{
+      dispatch(deleteUserStart()) ;
+
+      const payload = {
+        method: "DELETE",
+        credentials: 'include',
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({})
+      }
+      const res = await fetch(`http://localhost:5000/api/user/delete/${userId}`, payload) ;
+      let data = await res.json() ;
+
+      if(!data.success){
+        dispatch(deleteUserFailure(data));
+        return
+      }
+
+      dispatch(deleteUserSuccess(data)) ;
+    }
+    catch(error){
+      dispatch(deleteUserFailure(error));
+      console.log(error)
+    }
+  }
+
+  async function handleSignoutUser() {
+    try{
+      dispatch(signoutUserStart()) ;
+
+      const payload = {
+        method: "POST",
+        headers: {
+          "content-type": "application/json"
+        }
+      }
+      const res = await fetch(`http://localhost:5000/api/user/signout`, payload) ;
+      let data = await res.json() ;
+
+      if(!data.success){
+        dispatch(signoutUserFailure(data));
+        return
+      }
+
+      dispatch(signoutUserSuccess(data)) ;
+    }
+    catch(error){
+      dispatch(signoutUserFailure(error));
+      console.log(error)
+    }
+  }
+
 
   return (
     <div className='proflie-container mt-10 max-w-lg m-auto'>
@@ -110,9 +169,11 @@ export default function Profile() {
         <button disabled={loading} className="bg-green-700 p-3 rounded-lg text-white hover:opacity-95 disabled:opacity-80 uppercase">{loading ? 'loading...' : 'Create Listing'}</button>
       </form>
       <div className="flex justify-between mt-3">
-        <span className='text-red-700 cursor-pointer font-medium hover:opacity-70'>Delete Account</span>
-        <span className='text-red-700 cursor-pointer font-medium hover:opacity-70'>Sign Out</span>
+        <span className='text-red-700 cursor-pointer font-medium hover:opacity-70' onClick={() => handleDeleteAccount()}>Delete Account</span>
+        <span className='text-red-700 cursor-pointer font-medium hover:opacity-70' onClick={() => handleSignoutUser()}>Sign Out</span>
       </div>
+
+      
 
     </div>
   )

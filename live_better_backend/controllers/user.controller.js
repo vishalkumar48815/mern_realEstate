@@ -28,15 +28,11 @@ export const updateUser = async (req, res, next) => {
             req.body.password = bcryptjs.hashSync(req.body.password, 10);
         }
 
-
-
         const updatedUser = await User.findByIdAndUpdate(req.params.id, {
             $set: updateFields
         }, { new: true }).lean()
 
         const { password, ...rest } = updatedUser
-        let jwtToken = jwt.sign({id: updatedUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'}) ;
-        
         res.status(200).json({...rest, success: true});
 
     }
@@ -45,3 +41,39 @@ export const updateUser = async (req, res, next) => {
     }
 }
 
+
+
+export const deleteUser = async (req, res, next) => {
+    try {
+        // Check if the authenticated user is deleting their own account
+        if (req.user.id !== req.params.id) {
+            return next(errorHandler(401, 'You can only delete your own account!'));
+        }
+
+        // Delete the user
+        const deletedUser = await User.findByIdAndDelete(req.user.id);
+
+        // Check if deletion was successful
+        if (deletedUser.deletedCount === 0) {
+            return next(errorHandler(404, 'User not found or could not be deleted.'));
+        }
+
+        // Respond with a success message
+        res.status(200).json({ message: 'User deleted successfully.', success: true }).clearCookie('accessToken');
+    } catch (error) {
+        next(error); // Pass any caught errors to the error handler middleware
+    }
+};
+
+
+
+
+export const signOutUser = async (req, res, next) => {
+    try {
+        res.clearCookie('accessToken');
+        // Respond with a success message
+        res.status(200).json({ message: 'User signed out successfully!', success: true });
+    } catch (error) {
+        next(error); // Pass any caught errors to the error handler middleware
+    }
+};

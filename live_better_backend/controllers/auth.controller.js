@@ -65,7 +65,7 @@ export const googleAuth = async (req, res, next) =>{
             let jwtToken = jwt.sign({id: newUserByGoogleAuth._id}, process.env.JWT_SECRET, {expiresIn: '1h'}) ;
             const {password: pass, ...rest} = newUserByGoogleAuth._doc ;
             
-            res.cookie('accessToken', jwtToken, {httpOnly: true}).status(200).json(rest);
+            res.cookie('accessToken', jwtToken, {httpOnly: true}).status(200).json({...rest, success: true});
         }
 
      }
