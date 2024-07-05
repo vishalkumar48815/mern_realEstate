@@ -3,7 +3,8 @@ import Input from '../components/Input'
 import { useDispatch, useSelector } from 'react-redux';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { app } from '../firebase';
-import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signInFailure, signOutUser, signoutUserFailure, signoutUserStart, signoutUserSuccess, updatUserSuccess, updateUserFailure, updateUserStart } from '../redux/reducers/userSlice';
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutUserFailure, signoutUserStart, signoutUserSuccess, updatUserSuccess, updateUserFailure, updateUserStart } from '../redux/reducers/userSlice';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
   const [loading, setLoading] = useState(false);
@@ -166,7 +167,7 @@ export default function Profile() {
         <Input type="password" placeholder="Password" id="userPassword" onChange={(e) => setFormInputs({ ...formInputs, password: e.target.value })} />
 
         <button disabled={loading} className="bg-slate-700 p-3 rounded-lg text-white hover:opacity-95 disabled:opacity-80 uppercase">{loading ? 'loading...' : 'Update'}</button>
-        <button disabled={loading} className="bg-green-700 p-3 rounded-lg text-white hover:opacity-95 disabled:opacity-80 uppercase">{loading ? 'loading...' : 'Create Listing'}</button>
+        <Link to="/create-listing" disabled={loading} className="bg-green-700 p-3 rounded-lg text-white hover:opacity-95 disabled:opacity-80 uppercase text-center">{loading ? 'loading...' : 'Create Listing'}</Link>
       </form>
       <div className="flex justify-between mt-3">
         <span className='text-red-700 cursor-pointer font-medium hover:opacity-70' onClick={() => handleDeleteAccount()}>Delete Account</span>
