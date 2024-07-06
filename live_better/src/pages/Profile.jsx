@@ -7,13 +7,13 @@ import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutUserFailu
 import { Link } from 'react-router-dom';
 
 export default function Profile() {
+  const currentUser = useSelector(state => state.user.currentUser);
   const [loading, setLoading] = useState(false);
   const [imgUploadError, setImgUploadError] = useState(false);
   const [fileUploaded, setFileUploaded] = useState(undefined);
   const [uploadImgProgressPerc, setUploadImgProgressPerc] = useState(0);
   const [formData, setFormData] = useState({});
   const imageUploadRef = useRef(null);
-  const currentUser = useSelector(state => state.user.currentUser);
   let dispatch = useDispatch();
   
 
@@ -35,7 +35,7 @@ export default function Profile() {
   function handleAvatarUpload(file) {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
-    const storageRef = ref(storage, `mern-realestate-avatars/${fileName}`);
+    const storageRef = ref(storage, `better_live_project/avatars/${fileName}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on('state_changed', async (snapshot) => {
@@ -156,7 +156,7 @@ export default function Profile() {
 
       <form action="" className='flex flex-col gap-4 mt-3' onSubmit={handleUpdateProfile}>
         <input onChange={(e) => setFileUploaded(e.target.files[0])} type="file" accept='image./*' ref={imageUploadRef} hidden />
-        <img className='w-28 h-28 max-w-28 max-h-28 rounded-full self-center' src={formData?.avatar || formInputs.profile_img} alt="" onClick={() => imageUploadRef.current.click()} />
+        <img className='w-28 h-28 max-w-28 max-h-28 rounded-full self-center' src={formData?.avatar || formInputs.avatar} alt="" onClick={() => imageUploadRef.current.click()} />
         <p className='self-center text-sm'>
           {imgUploadError ? <span className='text-red-700'>Failed Upload Image!</span> :
             (uploadImgProgressPerc > 0 && uploadImgProgressPerc < 100) ? <span className='text-slate-700'>`Uploading {uploadImgProgressPerc}%`</span> : (uploadImgProgressPerc === 100) ? <span className='text-green-700'>Image Successfully Uploaded!</span> : ''}

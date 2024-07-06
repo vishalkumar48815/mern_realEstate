@@ -2,11 +2,15 @@ import mongoose from "mongoose";
 
 
 const listingSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true
     },
     description: {
+        type: String,
+        required: true
+    },
+    address: {
         type: String,
         required: true
     },
@@ -16,10 +20,6 @@ const listingSchema = new mongoose.Schema({
     },
     discountPrice: {
         type: Number,
-        required: true
-    },
-    address: {
-        type: String,
         required: true
     },
     bathrooms: {
