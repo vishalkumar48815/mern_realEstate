@@ -33,7 +33,7 @@ export const signIn = async (req, res, next) => {
         if (!validPassword) {
             return res.status(401).json({ success: false, error: "Wrong credentials!" });
         }
-        const jwtToken = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, {expiresIn: '1h'});
+        const jwtToken = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
         const { password: pass, ...userInfo } = validUser._doc;
         res.cookie('accessToken', jwtToken, { httpOnly: true }).status(200).json({...userInfo,  success:true})
     }
@@ -47,9 +47,9 @@ export const googleAuth = async (req, res, next) =>{
         let user = await User.findOne({email: req.body.email}).lean() ;
 
         if(user){ 
-            let jwtToken = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '1h'}) ;
+            let jwtToken = jwt.sign({id: user._id}, process.env.JWT_SECRET, { expiresIn: '30d' }) ;
             let { password: pass, ...userInfo } = user ;
-            res.cookie('accessToken', jwtToken, {httpOnly: true})
+            res.cookie('accessToken', jwtToken, { httpOnly: true })
             .status(200)
             .json({...userInfo, success: true}) ;
 
@@ -62,10 +62,10 @@ export const googleAuth = async (req, res, next) =>{
             const newUserByGoogleAuth = new User({email: req.body.email, username: req.body.name, profile_img: req.body.photoUrl, password: hashedPassword});
             await newUserByGoogleAuth.save() ;
 
-            let jwtToken = jwt.sign({id: newUserByGoogleAuth._id}, process.env.JWT_SECRET, {expiresIn: '1h'}) ;
+            let jwtToken = jwt.sign({id: newUserByGoogleAuth._id}, process.env.JWT_SECRET, { expiresIn: '30d' }) ;
             const {password: pass, ...rest} = newUserByGoogleAuth._doc ;
             
-            res.cookie('accessToken', jwtToken, {httpOnly: true}).status(200).json({...rest, success: true});
+            res.cookie('accessToken', jwtToken, { httpOnly: true }).status(200).json({...rest, success: true});
         }
 
      }

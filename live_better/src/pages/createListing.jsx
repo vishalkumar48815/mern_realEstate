@@ -2,7 +2,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/
 import { useState } from "react"
 import { app } from "../firebase";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const CreateListing = () => {
@@ -30,6 +30,7 @@ const CreateListing = () => {
     const [fileUploading, setFileUploading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     // console.log("files: ", files, "formData: ", formData)
 
@@ -135,18 +136,21 @@ const CreateListing = () => {
             }
             const res = await fetch('http://localhost:5000/api/listing/create', payload);
             const data = await res.json();
+            console.log("Data: ", data)
 
             setLoading(false);
             if (!data || !data.success) {
+                console.log("not success")
                 setError(data.message);
                 return
             }
 
             setError(false);
-            setFormData(formInitialState) ;
-            Navigate(`/listing/${data._id}`)
+            // setFormData(formInitialState) ;
+            navigate(`/listing/list/${currentUser._id}`)
         }
         catch (error) {
+            console.log("catch: ", error)
             setLoading(false)
             setError(error.message)
 
@@ -190,12 +194,12 @@ const CreateListing = () => {
                     </div>
 
                     <div className="flex flex-row gap-3 text-center items-center">
-                        <input type="checkbox" id="furnished" className="rounded-md w-5 h-5 border border-gray-300" value={formData.furnished} onChange={handleInputChange} />
+                        <input type="checkbox" id="furnished" className="rounded-md w-5 h-5 border border-gray-300" checked={formData.furnished} onChange={handleInputChange} />
                         <span className="text-lg">Furnished</span>
                     </div>
 
                     <div className="flex flex-row gap-3 text-center items-center">
-                        <input type="checkbox" id="offer" className="rounded-md w-5 h-5 border border-gray-300" value={formData.offer} onChange={handleInputChange} />
+                        <input type="checkbox" id="offer" className="rounded-md w-5 h-5 border border-gray-300" checked={formData.offer} onChange={handleInputChange} />
                         <span className="text-lg">Offer</span>
                     </div>
                 </div>

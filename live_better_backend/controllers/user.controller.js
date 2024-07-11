@@ -1,3 +1,4 @@
+import Listing from "../models/listing.model.js";
 import User from "../models/user.model.js";
 import errorHandler from "../utils/error.js"
 import bcryptjs from 'bcryptjs'
@@ -77,3 +78,5 @@ export const signOutUser = async (req, res, next) => {
         next(error); // Pass any caught errors to the error handler middleware
     }
 };
+
+
