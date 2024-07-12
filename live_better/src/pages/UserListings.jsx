@@ -80,12 +80,14 @@ const UserListings = () => {
                     <div className="p-2">
                         <img className="w-32 h-28 rounded-md" src={listing.imageUrls[0]} alt="" />
                     </div>
-                    <h2 className="my-2 text-xl font-medium text-start text-wrap whitespace-break-spaces flex-grow">{listing.title}</h2>
-                    <div className="flex flex-col pe-3 items-end">
-                        <span className="text-red-700 text-xl p-1 hover:text-red-600 uppercase self-center"
-                            onClick={() => handleDeleteListing(listing._id)}>Delete</span>
+                    <Link to={"/listing/"+listing._id}>
+                        <h2 className="my-2 text-xl font-normal text-start text-wrap whitespace-break-spaces flex-grow truncate hover:underline">{listing.title}</h2>
+                    </Link>
+                    <div className="flex flex-col pe-3 sm:ms-auto">
+                        <button type="button" className="text-red-700 text-xl p-1 hover:opacity-90 hover:text-red-600 uppercase self-center transform transition-transform hover:scale-95 duration-150"
+                            onClick={() => handleDeleteListing(listing._id)}>Delete</button>
                         <Link to={"/edit-listing/" + listing._id} className="mx-auto">
-                            <button className="text-green-700 text-xl p-1 hover:text-green-600 uppercase self-center">Edit</button>
+                            <button type="button" className="text-green-700 text-xl p-1 hover:text-green-600 hover:opacity-90 uppercase self-center transform transition-transform hover:scale-95 duration-150">Edit</button>
                         </Link>
 
                     </div>

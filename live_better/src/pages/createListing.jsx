@@ -136,18 +136,18 @@ const CreateListing = () => {
             }
             const res = await fetch('http://localhost:5000/api/listing/create', payload);
             const data = await res.json();
-            console.log("Data: ", data)
+            // console.log("Data: ", data)
 
             setLoading(false);
             if (!data || !data.success) {
-                console.log("not success")
+                console.log("Could not create listing: " + data.message)
                 setError(data.message);
                 return
             }
 
             setError(false);
             // setFormData(formInitialState) ;
-            navigate(`/listing/list/${currentUser._id}`)
+            navigate(`/listings/list/${currentUser._id}`)
         }
         catch (error) {
             console.log("catch: ", error)
@@ -165,7 +165,7 @@ const CreateListing = () => {
         })
     }
 
-    console.log('formData', formData);
+    // console.log('formData', formData);
 
     return <main className="create-listing-container my-5 p-3 max-w-7xl m-auto">
         <h2 className="text-3xl text-center font-semibold mt-5">Create a Listing</h2>

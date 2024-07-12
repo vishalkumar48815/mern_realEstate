@@ -9,6 +9,7 @@ import PrivateRoute from './components/PrivateRoute';
 import CreateListing from './pages/createListing';
 import UserListings from './pages/UserListings';
 import EditListing from './pages/EditListing';
+import ViewListing from './pages/ViewListing';
 
 
 function App() {
@@ -20,10 +21,11 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/listing/:id" element={<ViewListing />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/create-listing" element={<CreateListing />} />
-          <Route path="/listings/:id" element={<UserListings />} />
+          <Route path="/listings/list/:id" element={<UserListings />} />
           <Route path="/edit-listing/:id" element={<EditListing />} />
         </Route>
       </Routes>

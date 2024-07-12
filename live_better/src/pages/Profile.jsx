@@ -173,12 +173,12 @@ export default function Profile() {
       </form>
 
       <div className="flex justify-between mt-3">
-        <span className='text-red-700 cursor-pointer font-medium hover:opacity-70' onClick={() => handleDeleteAccount()}>Delete Account</span>
-        <span className='text-red-700 cursor-pointer font-medium hover:opacity-70' onClick={() => handleSignoutUser()}>Sign Out</span>
+        <span className='text-red-700 cursor-pointer font-medium hover:opacity-70 transform transition-transform hover:scale-95 duration-150' onClick={() => handleDeleteAccount()}>Delete Account</span>
+        <span className='text-red-700 cursor-pointer font-medium hover:opacity-70 transform transition-transform hover:scale-95 duration-150' onClick={() => handleSignoutUser()}>Sign Out</span>
       </div>
 
       <div className="flex justify-center">
-        <Link to={"/listings/" + currentUser._id} className="p-3 text-xl text-green-700 hover:text-green-600">Show listings</Link>
+        <Link to={"/listings/list/" + currentUser._id} className="transform transition-transform duration-150 hover:scale-95 p-3 text-xl hover:opacity-70 text-green-700 hover:text-green-600">Show listings</Link>
       </div>
 
       

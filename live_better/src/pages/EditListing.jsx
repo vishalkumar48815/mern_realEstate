@@ -150,7 +150,7 @@ const EditListing = () => {
 
             setError(false);
             // setFormData(formInitialState) ;
-            navigate(`/listings/${currentUser._id}`)
+            navigate(`/listings/list/${currentUser._id}`)
         }
         catch (error) {
             console.log("catch: ", error)
@@ -199,7 +199,7 @@ const EditListing = () => {
     // to perform actions on page reload or data refresh if any dependency given
     useEffect(() => {
         getSelectedListing();
-    }, [])
+    }, [params.id])
 
     console.log('formData', formData);
 
